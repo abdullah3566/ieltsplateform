@@ -1,0 +1,548 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --navy: #0A1628;
+    --navy-mid: #0F2040;
+    --navy-light: #1a3155;
+    --gold: #C9A84C;
+    --gold-light: #E4C97A;
+    --gold-dim: rgba(201,168,76,0.18);
+    --gold-border: rgba(201,168,76,0.35);
+    --text-bright: #F0EDE8;
+    --text-mid: #A8B5C8;
+    --text-dim: #6A7A8F;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  #lp {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text-bright);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .serif { font-family: 'Playfair Display', Georgia, serif; }
+
+  .gold { color: var(--gold); }
+  .gold-italic { color: var(--gold); font-style: italic; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,22,40,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .logo-mark {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--gold), #A8752A);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-size: 16px; color: var(--navy);
+  }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
+  .logo-text span { color: var(--gold); }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a { color: var(--text-mid); font-size: 14px; font-weight: 400; cursor: pointer; transition: color 0.2s; text-decoration: none; }
+  .nav-links a:hover { color: var(--text-bright); }
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+  .btn-ghost { background: none; border: 1px solid var(--card-border); color: var(--text-mid); padding: 8px 18px; border-radius: 6px; font-size: 14px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+  .btn-ghost:hover { border-color: var(--gold-border); color: var(--gold-light); }
+  .btn-gold { background: var(--gold); color: var(--navy); padding: 8px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    padding: 96px 2rem 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(201,168,76,0.07) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(201,168,76,0.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold-dim); border: 1px solid var(--gold-border);
+    color: var(--gold-light); font-size: 13px; font-weight: 500;
+    padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 { font-size: clamp(36px, 5.5vw, 64px); line-height: 1.08; font-weight: 700; letter-spacing: -1.5px; max-width: 820px; margin: 0 auto 20px; }
+  .hero-sub { font-size: clamp(15px, 2vw, 18px); color: var(--text-mid); max-width: 580px; margin: 0 auto 40px; line-height: 1.7; font-weight: 300; }
+  .hero-ctas { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 56px; }
+  .btn-primary-lg { background: var(--gold); color: var(--navy); padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .btn-primary-lg:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
+  .btn-outline-lg { background: none; color: var(--text-bright); padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; border: 1px solid var(--card-border); font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .btn-outline-lg:hover { border-color: var(--gold-border); color: var(--gold-light); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 48px; flex-wrap: wrap;
+    background: var(--card-bg); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border);
+    padding: 28px 2rem;
+  }
+  .stat-item { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); display: block; }
+  .stat-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  /* SECTIONS */
+  section { padding: 80px 2rem; max-width: 1200px; margin: 0 auto; }
+  .section-label { color: var(--gold); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px; }
+  .section-title { font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+  .section-sub { font-size: 16px; color: var(--text-mid); line-height: 1.7; max-width: 560px; }
+
+  /* FEATURES */
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 56px; }
+  .feature-card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 28px;
+    transition: all 0.25s;
+  }
+  .feature-card:hover { border-color: var(--gold-border); transform: translateY(-3px); background: rgba(255,255,255,0.06); }
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: var(--gold-dim); border: 1px solid var(--gold-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 20px; color: var(--gold);
+  }
+  .feature-card h3 { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 600; margin-bottom: 10px; }
+  .feature-card p { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
+
+  /* TRACKS */
+  .tracks-wrapper { padding: 80px 2rem; background: rgba(255,255,255,0.02); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+  .tracks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 52px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+  .track-card {
+    border-radius: 20px; padding: 36px;
+    position: relative; overflow: hidden;
+  }
+  .track-academic { background: linear-gradient(135deg, #0F2040 0%, #162A50 100%); border: 1px solid rgba(201,168,76,0.3); }
+  .track-general { background: linear-gradient(135deg, #161428 0%, #1E1840 100%); border: 1px solid rgba(138,100,200,0.3); }
+  .track-badge { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; padding: 5px 12px; border-radius: 100px; margin-bottom: 20px; }
+  .badge-academic { background: var(--gold-dim); color: var(--gold-light); border: 1px solid var(--gold-border); }
+  .badge-general { background: rgba(138,100,200,0.15); color: #C4A8F0; border: 1px solid rgba(138,100,200,0.3); }
+  .track-card h3 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+  .track-card p { font-size: 14px; color: var(--text-mid); line-height: 1.7; margin-bottom: 24px; }
+  .track-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .skill-chip { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: var(--text-mid); font-size: 12px; padding: 5px 12px; border-radius: 100px; }
+  .track-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .track-link-gold { color: var(--gold); }
+  .track-link-purple { color: #C4A8F0; }
+
+  /* PRICING */
+  .pricing-toggle { display: flex; align-items: center; gap: 12px; margin-bottom: 52px; }
+  .toggle-btn { padding: 7px 18px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--card-border); background: none; color: var(--text-mid); font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .toggle-btn.active { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+  .save-badge { font-size: 11px; color: #6EE7B7; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.25); padding: 3px 10px; border-radius: 100px; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; }
+  .price-card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 28px; position: relative;
+  }
+  .price-card.featured { border-color: var(--gold); background: linear-gradient(160deg, rgba(201,168,76,0.08) 0%, var(--card-bg) 60%); }
+  .popular-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 14px; border-radius: 100px; white-space: nowrap; }
+  .plan-name { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 16px; }
+  .plan-price { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--text-bright); margin-bottom: 6px; }
+  .plan-price span { font-size: 16px; font-weight: 400; color: var(--text-dim); font-family: 'DM Sans', sans-serif; }
+  .plan-desc { font-size: 13px; color: var(--text-mid); margin-bottom: 24px; line-height: 1.5; }
+  .plan-features { list-style: none; margin-bottom: 28px; }
+  .plan-features li { font-size: 13px; color: var(--text-mid); padding: 6px 0; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--card-border); }
+  .plan-features li:last-child { border-bottom: none; }
+  .check { color: #6EE7B7; font-size: 14px; flex-shrink: 0; }
+  .btn-plan { width: 100%; padding: 11px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .btn-plan-ghost { background: none; border: 1px solid var(--card-border); color: var(--text-mid); }
+  .btn-plan-ghost:hover { border-color: var(--gold-border); color: var(--gold-light); }
+  .btn-plan-gold { background: var(--gold); color: var(--navy); border: none; }
+  .btn-plan-gold:hover { background: var(--gold-light); }
+
+  /* TESTIMONIALS */
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 52px; }
+  .testi-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; }
+  .stars { color: var(--gold); font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+  .testi-card blockquote { font-size: 14px; color: var(--text-mid); line-height: 1.75; font-style: italic; margin-bottom: 20px; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .testi-name { font-size: 14px; font-weight: 600; }
+  .testi-meta { font-size: 12px; color: var(--text-dim); }
+
+  /* CTA SECTION */
+  .cta-section { padding: 80px 2rem; text-align: center; }
+  .cta-box {
+    background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.04) 100%);
+    border: 1px solid var(--gold-border);
+    border-radius: 24px; padding: 64px 40px; max-width: 760px; margin: 0 auto;
+  }
+  .cta-box h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; margin-bottom: 16px; line-height: 1.15; }
+  .cta-box p { font-size: 16px; color: var(--text-mid); margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+  .cta-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--card-border); padding: 48px 2rem 32px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto 40px; }
+  .footer-brand p { font-size: 13px; color: var(--text-dim); margin-top: 14px; line-height: 1.7; max-width: 260px; }
+  .footer-col h4 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 16px; }
+  .footer-col a { display: block; font-size: 13px; color: var(--text-mid); cursor: pointer; text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--gold-light); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--card-border); padding-top: 24px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; gap: 12px; }
+  .footer-bottom p { font-size: 12px; color: var(--text-dim); }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 12px; color: var(--text-dim); cursor: pointer; text-decoration: none; }
+  .footer-links a:hover { color: var(--gold-light); }
+</style>
+
+<div id="lp">
+
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">Ie</div>
+    <div class="logo-text">IELTS<span>Pro</span></div>
+  </div>
+  <div class="nav-links" style="display:flex">
+    <a>Courses</a>
+    <a>Practice Tests</a>
+    <a>AI Feedback</a>
+    <a>Pricing</a>
+    <a>Blog</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-gold" onclick="sendPrompt('Build the student registration page for the IELTS platform')">Get Started Free →</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-bg-grid"></div>
+  <div style="position:relative; z-index:1">
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Now with GPT-4o AI Writing & Speaking Feedback
+    </div>
+    <h1>
+      Achieve Your Target<br>
+      <em class="gold-italic">IELTS Band Score</em>
+    </h1>
+    <p class="hero-sub">
+      The most comprehensive IELTS preparation platform — Academic &amp; General Training, AI feedback, timed mock exams, and a personalised study planner built around your exam date.
+    </p>
+    <div class="hero-ctas">
+      <button class="btn-primary-lg" onclick="sendPrompt('Build the student dashboard page for the IELTS platform')">Start Free Trial — 7 Days Pro</button>
+      <button class="btn-outline-lg">Watch Demo ▶</button>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap">
+      <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-dim)">
+        <span style="color:#6EE7B7">✓</span> No credit card required
+      </div>
+      <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-dim)">
+        <span style="color:#6EE7B7">✓</span> Academic &amp; General Training
+      </div>
+      <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-dim)">
+        <span style="color:#6EE7B7">✓</span> Cancel any time
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">50,000+</span>
+    <div class="stat-label">Active Learners</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">Band 7+</span>
+    <div class="stat-label">Average Score Achieved</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">20+</span>
+    <div class="stat-label">Skill Modules</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">500+</span>
+    <div class="stat-label">Practice Questions</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">4.9 ★</span>
+    <div class="stat-label">Student Rating</div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="section-label">Platform Features</div>
+  <h2 class="section-title">Everything You Need to<br>Reach <span class="gold">Band 7, 8, or 9</span></h2>
+  <p class="section-sub">A complete preparation ecosystem covering all four skills, with intelligent tools that adapt to your progress.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">✍️</div>
+      <h3>AI Writing Feedback</h3>
+      <p>GPT-4o analyses your Task 1 &amp; 2 essays across all four IELTS rubric dimensions. Inline sentence-level annotations, vocabulary upgrades, and a band estimate — within minutes.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎙️</div>
+      <h3>Speaking Practice</h3>
+      <p>Record yourself on Part 1, 2 &amp; 3 prompts directly in the browser. Whisper transcribes, GPT-4o assesses fluency, pronunciation, vocabulary range and coherence.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3>Full Mock Exams</h3>
+      <p>Timed, four-section IELTS mock exams under real test conditions. Includes MCQ, True/False/NG, matching, note completion, diagram labelling, and essay prompts.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📖</div>
+      <h3>Vocabulary Builder</h3>
+      <p>Admin-curated word library with spaced repetition (SRS/SM-2). Flashcard, multiple-choice, and fill-in-the-blank modes. Daily review reminders when cards are due.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <h3>Smart Study Planner</h3>
+      <p>Set your exam date and target band. The planner builds a personalised weekly schedule, sends 15-minute reminders, and tracks your study streaks and consistency.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <h3>Leaderboards &amp; Certificates</h3>
+      <p>Earn XP for every lesson, test, and review session. Compete on weekly and all-time leaderboards. Auto-issued, publicly verifiable certificates on track completion.</p>
+    </div>
+  </div>
+</section>
+
+<div class="tracks-wrapper">
+  <div style="text-align:center; max-width:1200px; margin:0 auto">
+    <div class="section-label" style="text-align:center">Choose Your Path</div>
+    <h2 class="section-title" style="text-align:center">Academic or General Training?<br>We've Got <span class="gold">Both</span></h2>
+    <p class="section-sub" style="margin:0 auto 0">Each track delivers distinct content paths, question types, and preparation strategies aligned to the official IELTS format.</p>
+  </div>
+  <div class="tracks-grid" style="margin-top:48px">
+    <div class="track-card track-academic">
+      <div class="track-badge badge-academic">Academic Track</div>
+      <h3>IELTS Academic</h3>
+      <p>For university admissions, professional registration, and immigration to English-speaking countries requiring academic proficiency assessment.</p>
+      <div class="track-skills">
+        <span class="skill-chip">Academic Reading</span>
+        <span class="skill-chip">Graph Description</span>
+        <span class="skill-chip">Argumentative Essays</span>
+        <span class="skill-chip">Complex Listening</span>
+        <span class="skill-chip">Academic Vocabulary</span>
+      </div>
+      <div style="font-size:13px; color:var(--text-dim); margin-bottom:20px">
+        <strong style="color:var(--text-mid)">Ideal for:</strong> University applicants · Medical &amp; legal professionals · Researchers
+      </div>
+      <span class="track-link track-link-gold">Explore Academic Track →</span>
+    </div>
+    <div class="track-card track-general">
+      <div class="track-badge badge-general">General Training</div>
+      <h3>IELTS General Training</h3>
+      <p>For secondary education, work experience, or immigration to Australia, Canada, New Zealand, and the UK.</p>
+      <div class="track-skills">
+        <span class="skill-chip">General Reading</span>
+        <span class="skill-chip">Letter Writing</span>
+        <span class="skill-chip">Opinion Essays</span>
+        <span class="skill-chip">Everyday Listening</span>
+        <span class="skill-chip">Workplace Vocabulary</span>
+      </div>
+      <div style="font-size:13px; color:var(--text-dim); margin-bottom:20px">
+        <strong style="color:var(--text-mid)">Ideal for:</strong> Immigration applicants · Work permit seekers · Secondary students
+      </div>
+      <span class="track-link track-link-purple">Explore General Training →</span>
+    </div>
+  </div>
+</div>
+
+<section id="pricing" style="padding-bottom:0">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">Start Free, Upgrade When Ready</h2>
+  <p class="section-sub">Every plan includes a 7-day Pro trial. No credit card required to start.</p>
+
+  <div style="margin-top:36px">
+    <div class="pricing-toggle">
+      <button class="toggle-btn active" id="monthly-btn" onclick="setPricing('monthly')">Monthly</button>
+      <button class="toggle-btn" id="annual-btn" onclick="setPricing('annual')">Annual</button>
+      <span class="save-badge">Save 30% annually</span>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0<span>/mo</span></div>
+        <div class="plan-desc">Get started with core lessons and limited practice tests.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 10 lessons per track</li>
+          <li><span class="check">✓</span> 5 practice tests/month</li>
+          <li><span class="check">✓</span> Vocabulary builder (50 words)</li>
+          <li><span class="check">✓</span> Discussion forums</li>
+          <li style="color:var(--text-dim)"><span style="color:var(--text-dim)">✗</span> AI writing feedback</li>
+          <li style="color:var(--text-dim)"><span style="color:var(--text-dim)">✗</span> Full mock exams</li>
+        </ul>
+        <button class="btn-plan btn-plan-ghost">Get Started Free</button>
+      </div>
+
+      <div class="price-card">
+        <div class="plan-name">Basic</div>
+        <div class="plan-price" id="basic-price">$12<span id="basic-period">/mo</span></div>
+        <div class="plan-desc">Full access to a single track of your choice.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> All lessons in 1 track</li>
+          <li><span class="check">✓</span> Unlimited practice tests</li>
+          <li><span class="check">✓</span> Full vocabulary builder</li>
+          <li><span class="check">✓</span> Study planner</li>
+          <li><span class="check">✓</span> 5 AI essay reviews/mo</li>
+          <li style="color:var(--text-dim)"><span style="color:var(--text-dim)">✗</span> Speaking AI feedback</li>
+        </ul>
+        <button class="btn-plan btn-plan-ghost">Start Basic</button>
+      </div>
+
+      <div class="price-card featured">
+        <div class="popular-tag">Most Popular</div>
+        <div class="plan-name" style="color:var(--gold)">Pro</div>
+        <div class="plan-price" id="pro-price">$24<span id="pro-period">/mo</span></div>
+        <div class="plan-desc">All tracks, unlimited AI features, and offline access.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> All tracks (Academic + General)</li>
+          <li><span class="check">✓</span> Unlimited AI writing reviews</li>
+          <li><span class="check">✓</span> Speaking AI feedback</li>
+          <li><span class="check">✓</span> Full mock exams (timed)</li>
+          <li><span class="check">✓</span> Offline access (PWA)</li>
+          <li><span class="check">✓</span> Priority support</li>
+        </ul>
+        <button class="btn-plan btn-plan-gold">Start Pro — 7 Days Free</button>
+      </div>
+
+      <div class="price-card">
+        <div class="plan-name">Team</div>
+        <div class="plan-price">Custom</div>
+        <div class="plan-desc">For coaching institutes and organisations managing multiple learners.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Everything in Pro</li>
+          <li><span class="check">✓</span> Multi-seat management</li>
+          <li><span class="check">✓</span> Admin analytics dashboard</li>
+          <li><span class="check">✓</span> Instructor accounts</li>
+          <li><span class="check">✓</span> Bulk enrollment tools</li>
+          <li><span class="check">✓</span> Dedicated support</li>
+        </ul>
+        <button class="btn-plan btn-plan-ghost">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="section-label">Success Stories</div>
+  <h2 class="section-title">Students Who Reached Their<br><span class="gold">Target Band</span></h2>
+
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"The AI writing feedback is extraordinary — it broke down exactly why my Task 2 essays were stuck at 6.5 and what I needed to fix. Jumped to 7.5 in six weeks."</blockquote>
+      <div class="testi-author">
+        <div class="avatar" style="background:rgba(201,168,76,0.2); color:var(--gold)">AK</div>
+        <div>
+          <div class="testi-name">Ayesha Khan</div>
+          <div class="testi-meta">Band 7.5 achieved · Canada PR visa</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"I had tried three other platforms. This one is the only one that actually simulates the exam environment properly. The timed mock exams made the real test feel familiar."</blockquote>
+      <div class="testi-author">
+        <div class="avatar" style="background:rgba(100,150,240,0.2); color:#88AEFF">MR</div>
+        <div>
+          <div class="testi-name">Mohammed Al-Rashidi</div>
+          <div class="testi-meta">Band 8.0 achieved · UK university admission</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"The vocabulary builder with spaced repetition genuinely works. I added 400 words in a month and my reading score went from 6.0 to 7.0. The speaking practice is also excellent."</blockquote>
+      <div class="testi-author">
+        <div class="avatar" style="background:rgba(110,231,183,0.2); color:#6EE7B7">PL</div>
+        <div>
+          <div class="testi-name">Priya Lakshmanan</div>
+          <div class="testi-meta">Band 7.0 achieved · Australian immigration</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section">
+  <div class="cta-box">
+    <h2>Ready to Achieve Your<br><span class="gold-italic">Target Band Score?</span></h2>
+    <p>Join 50,000+ students using IELTSPro to prepare smarter. Start your free 7-day Pro trial — no credit card needed.</p>
+    <div class="cta-actions">
+      <button class="btn-primary-lg" onclick="sendPrompt('Build the student registration/sign-up page for the IELTS platform')">Create Free Account →</button>
+      <button class="btn-outline-lg">View All Features</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <div class="logo-mark">Ie</div>
+        <div class="logo-text">IELTS<span>Pro</span></div>
+      </div>
+      <p>The most comprehensive IELTS preparation platform, powered by AI. Academic &amp; General Training tracks, 50,000+ learners.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a>Academic Track</a>
+      <a>General Training</a>
+      <a>Practice Tests</a>
+      <a>Vocabulary Builder</a>
+      <a>Study Planner</a>
+    </div>
+    <div class="footer-col">
+      <h4>AI Features</h4>
+      <a>Writing Feedback</a>
+      <a>Speaking Analysis</a>
+      <a>Mock Exams</a>
+      <a>Band Prediction</a>
+      <a>Essay Grading</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a>About</a>
+      <a>Blog</a>
+      <a>Careers</a>
+      <a>Contact</a>
+      <a>Privacy Policy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 IELTSPro. All rights reserved.</p>
+    <div class="footer-links">
+      <a>Terms of Service</a>
+      <a>Privacy Policy</a>
+      <a>Cookie Preferences</a>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+function setPricing(period) {
+  const isAnnual = period === 'annual';
+  document.getElementById('monthly-btn').className = 'toggle-btn' + (isAnnual ? '' : ' active');
+  document.getElementById('annual-btn').className = 'toggle-btn' + (isAnnual ? ' active' : '');
+  document.getElementById('basic-price').innerHTML = (isAnnual ? '$8' : '$12') + '<span>/mo</span>';
+  document.getElementById('pro-price').innerHTML = (isAnnual ? '$17' : '$24') + '<span>/mo</span>';
+}
+</script>
